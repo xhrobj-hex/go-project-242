@@ -1,6 +1,7 @@
 package main
 
 import (
+	"code"
 	"context"
 	"fmt"
 	"log"
@@ -10,16 +11,36 @@ import (
 )
 
 func main() {
+	if err := run(); err != nil {
+		log.Fatal(err)
+	}
+}
+
+func run() error {
 	cmd := &cli.Command{
-		Name:  "hexlet-path-size",
-		Usage: "print size of a file or directory",
-		Action: func(context.Context, *cli.Command) error {
-			fmt.Println("Hello from Hexlet!")
-			return nil
+		Name:      "hexlet-path-size",
+		Usage:     "print size of a file or directory",
+		ArgsUsage: "<path>",
+		Action: func(ctx context.Context, cmd *cli.Command) error {
+			path := cmd.Args().First()
+			if path == "" {
+				return fmt.Errorf("path is required")
+			}
+
+			return pathSize(ctx, path)
 		},
 	}
 
-	if err := cmd.Run(context.Background(), os.Args); err != nil {
-		log.Fatal(err)
+	return cmd.Run(context.Background(), os.Args)
+}
+
+func pathSize(ctx context.Context, path string) error {
+	size, err := code.GetSize(path)
+	if err != nil {
+		return err
 	}
+
+	fmt.Println(size)
+
+	return nil
 }
