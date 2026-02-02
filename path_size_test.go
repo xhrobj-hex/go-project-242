@@ -1,11 +1,10 @@
 package code
 
 import (
-	"fmt"
 	"testing"
 )
 
-func TestGetPathSize_File2b(t *testing.T) {
+func TestGetPathSize_File_NoFlags(t *testing.T) {
 	path := "testdata/file_2b.txt"
 	got, err := GetPathSize(path, false, false, false)
 	if err != nil {
@@ -18,7 +17,7 @@ func TestGetPathSize_File2b(t *testing.T) {
 	}
 }
 
-func TestGetPathSize_DirWithOneFile(t *testing.T) {
+func TestGetPathSize_Dir_FirstLevelOnly_NoFlags(t *testing.T) {
 	path := "testdata/dir_with_one_file"
 	got, err := GetPathSize(path, false, false, false)
 	if err != nil {
@@ -31,7 +30,7 @@ func TestGetPathSize_DirWithOneFile(t *testing.T) {
 	}
 }
 
-func TestGetPathSize_EmptyDir(t *testing.T) {
+func TestGetPathSize_EmptyDir_NoFlags(t *testing.T) {
 	path := "testdata/empty_dir"
 	got, err := GetPathSize(path, false, false, false)
 	if err != nil {
@@ -64,7 +63,7 @@ func TestGetPathSize_DirWithSubdir_RecursiveTrue(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := fmt.Sprintf("%dB\t%s", 2+2, path)
+	want := "4B\t" + path
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
@@ -72,12 +71,12 @@ func TestGetPathSize_DirWithSubdir_RecursiveTrue(t *testing.T) {
 
 func TestGetPathSize_DirWithSubdir_RecursiveFalse(t *testing.T) {
 	path := "testdata/dir_with_subdir"
-	got, err := GetPathSize(path, false, false, false) // NOTE: recursive=false
+	got, err := GetPathSize(path, false, false, false)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := fmt.Sprintf("%dB\t%s", 2, path)
+	want := "2B\t" + path
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
