@@ -1,6 +1,7 @@
 package code
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -51,6 +52,32 @@ func TestGetPathSize_OnlyHidden_AllFalse(t *testing.T) {
 	}
 
 	want := "0B\t" + path
+	if got != want {
+		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
+	}
+}
+
+func TestGetPathSize_DirWithSubdir_RecursiveTrue(t *testing.T) {
+	path := "testdata/dir_with_subdir"
+	got, err := GetPathSize(path, true, false, false) // NOTE: recursive=true
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	want := fmt.Sprintf("%dB\t%s", 2+2, path)
+	if got != want {
+		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
+	}
+}
+
+func TestGetPathSize_DirWithSubdir_RecursiveFalse(t *testing.T) {
+	path := "testdata/dir_with_subdir"
+	got, err := GetPathSize(path, false, false, false) // NOTE: recursive=false
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	want := fmt.Sprintf("%dB\t%s", 2, path)
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
