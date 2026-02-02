@@ -51,14 +51,14 @@ func run() error {
 			human := cmd.Bool("human")
 			all := cmd.Bool("all")
 
-			return getPathSize(ctx, path, recursive, human, all)
+			return getPathSize(path, recursive, human, all)
 		},
 	}
 
 	return cmd.Run(context.Background(), os.Args)
 }
 
-func getPathSize(ctx context.Context, path string, recursive, human, all bool) error {
+func getPathSize(path string, recursive, human, all bool) error {
 	size, err := code.GetPathSize(path, recursive, human, all)
 	if err != nil {
 		return err
