@@ -5,7 +5,7 @@ import (
 	"os"
 )
 
-func GetPathSize(path string) (string, error) {
+func GetPathSize(path string, human bool) (string, error) {
 	size, err := GetSize(path)
 	if err != nil {
 		return "", err
