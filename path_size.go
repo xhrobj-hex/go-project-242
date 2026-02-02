@@ -11,8 +11,7 @@ func GetPathSize(path string, human bool) (string, error) {
 		return "", err
 	}
 
-	r := formatPathSize(size, path)
-	return r, nil
+	return fmt.Sprintf("%s\t%s", FormatSize(size, human), path), nil
 }
 
 func GetSize(path string) (int64, error) {
@@ -20,9 +19,9 @@ func GetSize(path string) (int64, error) {
 	if err != nil {
 		return 0, err
 	}
+
 	if !pathStat.IsDir() {
-		r := pathStat.Size()
-		return r, nil
+		return pathStat.Size(), nil
 	}
 
 	entries, err := os.ReadDir(path)
@@ -46,9 +45,40 @@ func GetSize(path string) (int64, error) {
 }
 
 func FormatSize(size int64, human bool) string {
-	return fmt.Sprintf("%dB", size)
-}
+	if !human {
+		return fmt.Sprintf("%dB", size)
+	}
 
-func formatPathSize(size int64, path string) string {
-	return fmt.Sprintf("%d\t%s", size, path)
+	const (
+		KB int64 = 1024
+		MB       = KB * 1024
+		GB       = MB * 1024
+		TB       = GB * 1024
+		PB       = TB * 1024
+		EB       = PB * 1024
+	)
+
+	type unit struct {
+		name  string
+		value int64
+	}
+
+	units := []unit{
+		{"EB", EB},
+		{"PB", PB},
+		{"TB", TB},
+		{"GB", GB},
+		{"MB", MB},
+		{"KB", KB},
+	}
+
+	for _, u := range units {
+		if size < u.value {
+			continue
+		}
+		x := float64(size) / float64(u.value)
+		return fmt.Sprintf("%.1f%s", x, u.name)
+	}
+
+	return fmt.Sprintf("%dB", size)
 }
