@@ -23,6 +23,12 @@ func run() error {
 		ArgsUsage: "<path>",
 		Flags: []cli.Flag{
 			&cli.BoolFlag{
+				Name:    "recursive",
+				Aliases: []string{"r"},
+				Usage:   "recursive size of directories",
+				Value:   false,
+			},
+			&cli.BoolFlag{
 				Name:    "human",
 				Aliases: []string{"H"},
 				Usage:   "human-readable sizes (auto-select unit)",
@@ -41,18 +47,19 @@ func run() error {
 				return fmt.Errorf("path is required")
 			}
 
+			recursive := cmd.Bool("recursive")
 			human := cmd.Bool("human")
 			all := cmd.Bool("all")
 
-			return getPathSize(ctx, path, human, all)
+			return getPathSize(ctx, path, recursive, human, all)
 		},
 	}
 
 	return cmd.Run(context.Background(), os.Args)
 }
 
-func getPathSize(ctx context.Context, path string, human, all bool) error {
-	size, err := code.GetPathSize(path, human, all)
+func getPathSize(ctx context.Context, path string, recursive, human, all bool) error {
+	size, err := code.GetPathSize(path, recursive, human, all)
 	if err != nil {
 		return err
 	}
