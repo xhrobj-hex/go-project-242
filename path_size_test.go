@@ -1,6 +1,8 @@
 package code
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestGetPathSize_File2b(t *testing.T) {
 	path := "testdata/file_2b.txt"
@@ -38,6 +40,19 @@ func TestGetPathSize_EmptyDir(t *testing.T) {
 	want := "0B\t" + path
 	if got != want {
 		t.Fatalf("GetPathSize() want %q, got %q", want, got)
+	}
+}
+
+func TestGetPathSize_OnlyHidden_AllFalse(t *testing.T) {
+	path := "testdata/dir_with_only_hidden"
+	got, err := GetPathSize(path, false, false) // NOTE: human=false, all=false
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	want := "0B\t" + path
+	if got != want {
+		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
 }
 
