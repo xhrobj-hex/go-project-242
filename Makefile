@@ -2,7 +2,7 @@ lint:
 	golangci-lint run ./...
 
 run:
-	go run cmd/hexlet-path-size/main.go
+	go run cmd/hexlet-path-size/main.go testdata
 
 test:
 	go test -v ./...
