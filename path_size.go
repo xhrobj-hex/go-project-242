@@ -45,6 +45,10 @@ func GetSize(path string) (int64, error) {
 	return size, nil
 }
 
+func FormatSize(size int64, human bool) string {
+	return fmt.Sprintf("%dB", size)
+}
+
 func formatPathSize(size int64, path string) string {
 	return fmt.Sprintf("%d\t%s", size, path)
 }
