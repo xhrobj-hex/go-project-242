@@ -3,3 +3,6 @@
 
 # IDE / editors
 .vscode/
+
+# build artifacts
+bin/
