@@ -2,9 +2,9 @@ package code
 
 import "testing"
 
-func TestGetSize_File2b(t *testing.T) {
+func TestGetPathSize_File2b(t *testing.T) {
 	path := "testdata/file_2b.txt"
-	got, err := GetSize(path)
+	got, err := GetPathSize(path)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -15,9 +15,9 @@ func TestGetSize_File2b(t *testing.T) {
 	}
 }
 
-func TestGetSize_DirWithOneFile(t *testing.T) {
+func TestGetPathSize_DirWithOneFile(t *testing.T) {
 	path := "testdata/dir_with_one_file"
-	got, err := GetSize(path)
+	got, err := GetPathSize(path)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -28,9 +28,9 @@ func TestGetSize_DirWithOneFile(t *testing.T) {
 	}
 }
 
-func TestGetSize_EmptyDir(t *testing.T) {
+func TestGetPathSize_EmptyDir(t *testing.T) {
 	path := "testdata/empty_dir"
-	got, err := GetSize(path)
+	got, err := GetPathSize(path)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}

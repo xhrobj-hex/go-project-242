@@ -1,43 +1,33 @@
 package code
 
-/*
-
-Задачи
-------
-Добавьте функцию GetSize(), которая принимает путь к файлу или директории и возвращает размер:
-
-Если путь — это файл, вернуть его размер.
-Если директория — суммировать размеры файлов первого уровня.
-Измените вывод программы, чтобы результат выводился в формате:
-
-<размер>  <путь>
-В качестве разделителя между размером и путем используется символ табуляции.
-
-Подсказки
----------
-os.Lstat(path), чтобы получить FileInfo.
-entry.Info() для получения размера.
-
-*/
-
 import (
 	"fmt"
 	"os"
 )
 
-func GetSize(path string) (string, error) {
-	pathStat, err := os.Lstat(path)
+func GetPathSize(path string) (string, error) {
+	size, err := GetSize(path)
 	if err != nil {
 		return "", err
 	}
+
+	r := formatPathSize(size, path)
+	return r, nil
+}
+
+func GetSize(path string) (int64, error) {
+	pathStat, err := os.Lstat(path)
+	if err != nil {
+		return 0, err
+	}
 	if !pathStat.IsDir() {
-		r := formatResult(pathStat.Size(), path)
+		r := pathStat.Size()
 		return r, nil
 	}
 
 	entries, err := os.ReadDir(path)
 	if err != nil {
-		return "", err
+		return 0, err
 	}
 
 	var size int64
@@ -47,15 +37,14 @@ func GetSize(path string) (string, error) {
 		}
 		entryInfo, err := entry.Info()
 		if err != nil {
-			return "", err
+			return 0, err
 		}
 		size += entryInfo.Size()
 	}
 
-	r := formatResult(size, path)
-	return r, nil
+	return size, nil
 }
 
-func formatResult(size int64, path string) string {
+func formatPathSize(size int64, path string) string {
 	return fmt.Sprintf("%d\t%s", size, path)
 }
