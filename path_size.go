@@ -5,8 +5,8 @@ import (
 	"os"
 )
 
-func GetPathSize(path string, human bool) (string, error) {
-	size, err := GetSize(path)
+func GetPathSize(path string, human, all bool) (string, error) {
+	size, err := GetSize(path, all)
 	if err != nil {
 		return "", err
 	}
@@ -14,7 +14,7 @@ func GetPathSize(path string, human bool) (string, error) {
 	return fmt.Sprintf("%s\t%s", FormatSize(size, human), path), nil
 }
 
-func GetSize(path string) (int64, error) {
+func GetSize(path string, all bool) (int64, error) {
 	pathStat, err := os.Lstat(path)
 	if err != nil {
 		return 0, err
