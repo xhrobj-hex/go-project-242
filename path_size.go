@@ -3,6 +3,7 @@ package code
 import (
 	"fmt"
 	"os"
+	"strings"
 )
 
 func GetPathSize(path string, human, all bool) (string, error) {
@@ -15,9 +16,15 @@ func GetPathSize(path string, human, all bool) (string, error) {
 }
 
 func GetSize(path string, includeHidden bool) (int64, error) {
+	const hiddenPrefix = "."
+
 	pathStat, err := os.Lstat(path)
 	if err != nil {
 		return 0, err
+	}
+
+	if !includeHidden && strings.HasPrefix(pathStat.Name(), hiddenPrefix) {
+		return 0, nil
 	}
 
 	if !pathStat.IsDir() {
@@ -31,9 +38,13 @@ func GetSize(path string, includeHidden bool) (int64, error) {
 
 	var size int64
 	for _, entry := range entries {
+		if !includeHidden && strings.HasPrefix(entry.Name(), hiddenPrefix) {
+			continue
+		}
 		if entry.IsDir() {
 			continue
 		}
+
 		entryInfo, err := entry.Info()
 		if err != nil {
 			return 0, err
