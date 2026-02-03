@@ -11,7 +11,7 @@ func TestGetPathSize_File_NoFlags(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "2B\t" + path
+	want := "2B"
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
@@ -24,7 +24,7 @@ func TestGetPathSize_Dir_FirstLevelOnly_NoFlags(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "8B\t" + path
+	want := "8B"
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
@@ -37,7 +37,7 @@ func TestGetPathSize_EmptyDir_NoFlags(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "0B\t" + path
+	want := "0B"
 	if got != want {
 		t.Fatalf("GetPathSize() want %q, got %q", want, got)
 	}
@@ -50,7 +50,7 @@ func TestGetPathSize_OnlyHidden_AllFalse(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "0B\t" + path
+	want := "0B"
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
@@ -63,7 +63,7 @@ func TestGetPathSize_DirWithSubdir_RecursiveTrue(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "4B\t" + path
+	want := "4B"
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}
@@ -76,7 +76,7 @@ func TestGetPathSize_DirWithSubdir_RecursiveFalse(t *testing.T) {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	want := "2B\t" + path
+	want := "2B"
 	if got != want {
 		t.Fatalf("GetPathSize() want: %q\ngot:  %q", want, got)
 	}

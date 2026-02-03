@@ -64,7 +64,7 @@ func getPathSize(path string, recursive, human, all bool) error {
 		return err
 	}
 
-	fmt.Println(size)
+	fmt.Printf("%s\t%s", size, path)
 
 	return nil
 }
