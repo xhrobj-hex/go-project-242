@@ -96,7 +96,7 @@ func TestFormatSize_NoHuman(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := FormatSize(tt.in, false)
+			got := formatSize(tt.in, false)
 			if got != tt.want {
 				t.Fatalf("FormatSize(%d, false): want %q, got %q", tt.in, tt.want, got)
 			}
@@ -134,7 +134,7 @@ func TestFormatSize_Human_AllUnits(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := FormatSize(tt.in, true)
+			got := formatSize(tt.in, true)
 			if got != tt.want {
 				t.Fatalf("FormatSize(%d, true): want %q, got %q", tt.in, tt.want, got)
 			}

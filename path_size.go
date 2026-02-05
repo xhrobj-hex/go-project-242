@@ -7,16 +7,29 @@ import (
 	"strings"
 )
 
+// GetPathSize вычисляет размер файла или директории и возвращает его в виде строки.
+//
+// Функция поддерживает:
+//   - рекурсивный обход директорий, если recursive == true
+//   - учёт скрытых файлов и директорий (имена, начинающиеся с '.'), если all == true
+//   - человекочитаемый формат размера (KB, MB, GB и т.д.), если human == true
+//
+// Если path указывает на файл, возвращается его размер.
+// Если path указывает на директорию, вычисляется размер её содержимого.
+// При recursive == false учитываются только файлы первого уровня.
+//
+// Возвращаемое значение содержит только отформатированный размер
+// (например: "42B", "1.5MB").
 func GetPathSize(path string, recursive, human, all bool) (string, error) {
-	size, err := GetSize(path, recursive, all)
+	size, err := getSize(path, recursive, all)
 	if err != nil {
 		return "", err
 	}
 
-	return FormatSize(size, human), nil
+	return formatSize(size, human), nil
 }
 
-func GetSize(path string, recursive, includeHidden bool) (int64, error) {
+func getSize(path string, recursive, includeHidden bool) (int64, error) {
 	const hiddenPrefix = "."
 
 	pathStat, err := os.Lstat(path)
@@ -45,7 +58,7 @@ func GetSize(path string, recursive, includeHidden bool) (int64, error) {
 		if entry.IsDir() {
 			if recursive {
 				subPath := filepath.Join(path, entry.Name())
-				subDirSize, err := GetSize(subPath, recursive, includeHidden)
+				subDirSize, err := getSize(subPath, recursive, includeHidden)
 				if err != nil {
 					return 0, err
 				}
@@ -64,7 +77,7 @@ func GetSize(path string, recursive, includeHidden bool) (int64, error) {
 	return size, nil
 }
 
-func FormatSize(size int64, human bool) string {
+func formatSize(size int64, human bool) string {
 	if !human {
 		return fmt.Sprintf("%dB", size)
 	}
